@@ -9,16 +9,16 @@ const humanizeString = require('humanize-string')
 const detectInstalled = require('detect-installed')
 const VersionChecker = require('ember-cli-version-checker')
 const typefaceList = require('./lib/typefaces')
-const defaultOptions = { typefaces: [] }
+const defaultOptions = { fontsources: [] }
 
 module.exports = {
-  name: 'ember-typeface',
+  name: 'ember-fontsource',
 
   init () {
     this._super.init && this._super.init.apply(this, arguments);
 
     let checker = new VersionChecker(this)
-    let assertMessage = 'To use ember-typeface you must have ember-cli 2.16 or above.'
+    let assertMessage = 'To use ember-fontsource you must have ember-cli 2.16 or above.'
 
     checker
       .for('ember-cli')
@@ -26,74 +26,74 @@ module.exports = {
   },
 
   included (app) {
-    let typefaceOptions = require(`${this.project.root}/config/environment`)(app.env).typefaceOptions || defaultOptions
-    let typefaces = typefaceOptions.disableAuto ? [] : getTypefacesFromPackage()
+    let fontsourceOptions = require(`${this.project.root}/config/environment`)(app.env).fontsourceOptions || defaultOptions
+    let fontsources = fontsourceOptions.disableAuto ? [] : getFontSourcesFromPackage()
 
     this._options = merge.all([{}, {
-      typefaces
-    }, typefaceOptions])
+      fontsources
+    }, fontsourceOptions])
 
 
-    if (!this._options.typefaces.length) {
+    if (!this._options.fontsources.length) {
       return;
     }
 
-    this._checkTypefaces()
+    this._checkFontSources()
     this._createImports()
   },
 
   includedCommands () {
     let emberEnv = process.env.EMBER_ENV || 'development'
-    let typefaceOptions = require(`${this.project.root}/config/environment`)(emberEnv).typefaceOptions || defaultOptions
+    let fontsourceOptions = require(`${this.project.root}/config/environment`)(emberEnv).fontsourceOptions || defaultOptions
 
     return {
-      'typeface:active': {
-        name: 'typeface:active',
-        description: 'Display a list of the active typefaces.',
+      'fontsource:active': {
+        name: 'fontsource:active',
+        description: 'Display a list of the active fontsources.',
         works: 'insideProject',
         run () {
-          let typefaceListFromConfig = typefaceOptions.typefaces
-            .filter((typeface) => typefaceList.includes(typeface.toLowerCase()))
-          let typefaceListFromPackages = getTypefacesFromPackage()
-            .filter((typeface) => typefaceList.includes(typeface.toLowerCase()))
+          let fontsourceListFromConfig = fontsourceOptions.fontsources
+            .filter((fontsource) => typefaceList.includes(fontsource.toLowerCase()))
+          let fontsourceListFromPackages = getFontSourcesFromPackage()
+            .filter((fontsource) => typefaceList.includes(fontsource.toLowerCase()))
 
-          let fullTypefaceList = typefaceOptions.disableAuto ?
-            typefaceListFromConfig :
-            typefaceListFromConfig.concat(typefaceListFromPackages).filter(onlyUnique)
+          let fullFontSourceList = fontsourceOptions.disableAuto ?
+            fontsourceListFromConfig :
+            fontsourceListFromConfig.concat(fontsourceListFromPackages).filter(onlyUnique)
 
-          if (!(fullTypefaceList.length > 0)) {
-            this.ui.writeLine('There are no active typefaces.')
+          if (!(fullFontSourceList.length > 0)) {
+            this.ui.writeLine('There are no active fontsources.')
           }
 
-          for (let typeface of fullTypefaceList) {
-            this.ui.writeLine(`${titleize(humanizeString(typeface))} (${typeface})`)
+          for (let fontsource of fullFontSourceList) {
+            this.ui.writeLine(`${titleize(humanizeString(fontsource))} (${fontsource})`)
           }
         }
       },
-      'typeface:list': {
-        name: 'typeface:list',
-        description: 'Display a list of all the available typefaces.',
+      'fontsource:list': {
+        name: 'fontsource:list',
+        description: 'Display a list of all the available fontsources.',
         works: 'insideProject',
         run () {
-          for (let typeface of typefaceList) {
-            this.ui.writeLine(`${titleize(humanizeString(typeface))} (${typeface})`)
+          for (let fontsource of typefaceList) {
+            this.ui.writeLine(`${titleize(humanizeString(fontsource))} (${fontsource})`)
           }
         }
       },
-      'typeface:search': {
-        name: 'typeface:search',
-        description: 'Fuzzy search the list of available typefaces.',
+      'fontsource:search': {
+        name: 'fontsource:search',
+        description: 'Fuzzy search the list of available fontsources.',
         works: 'insideProject',
         anonymousOptions: [
           '<name>'
         ],
         run (commandOptions, rawArgs) {
           let name = rawArgs[0]
-          let filteredTypefaceList = typefaceList
-            .filter((typeface) => fuzzysearch(name.toLowerCase(), typeface.toLowerCase()))
+          let filteredFontSourceList = typefaceList
+            .filter((fontsource) => fuzzysearch(name.toLowerCase(), fontsource.toLowerCase()))
 
-          for (let typeface of filteredTypefaceList) {
-            this.ui.writeLine(`${titleize(humanizeString(typeface))} (${typeface})`)
+          for (let fontsource of filteredFontSourceList) {
+            this.ui.writeLine(`${titleize(humanizeString(fontsource))} (${fontsource})`)
           }
         }
       }
@@ -104,29 +104,29 @@ module.exports = {
     return (this.parent && this.parent.options) || (app && app.options) || {}
   },
 
-  _checkTypefaces () {
-    this._options.typefaces.forEach((typeface) => {
-      if (!typefaceList.includes(typeface)) {
-        throw new Error(`The font '${typeface}' is not supported. Please chose a font from the available list.`)
+  _checkFontSources () {
+    this._options.fontsources.forEach((fontsource) => {
+      if (!typefaceList.includes(fontsource)) {
+        throw new Error(`The font '${fontsource}' is not supported. Please chose a font from the available list.`)
       }
 
-      if (!detectInstalled.sync(`typeface-${typeface}`, { local: true })) {
-        throw new Error(`The font package 'typeface-${typeface}' is not installed. Please add it to your project with NPM.`)
+      if (!detectInstalled.sync(`fontsource-${fontsource}`, { local: true })) {
+        throw new Error(`The font package 'fontsource-${fontsource}' is not installed. Please add it to your project with NPM.`)
       }
     })
   },
 
-  _getTypefaceFiles (typeface) {
-    return globby.sync(`node_modules/typeface-${typeface}/files`)
+  _getFontSourceFiles (fontsource) {
+    return globby.sync(`node_modules/fontsource-${fontsource}/files`)
   },
 
   _createImports () {
-    this._options.typefaces.filter(onlyUnique).forEach((typeface) => {
-      this.import(`node_modules/typeface-${typeface}/index.css`, {
+    this._options.fontsources.filter(onlyUnique).forEach((fontsource) => {
+      this.import(`node_modules/fontsource-${fontsource}/index.css`, {
         destDir: 'assets/files'
       });
 
-      this._getTypefaceFiles(typeface).forEach((fileName) => {
+      this._getFontSourceFiles(fontsource).forEach((fileName) => {
         this.import(fileName, {
           destDir: 'assets/files'
         });
@@ -140,8 +140,8 @@ function onlyUnique(value, index, self) {
   return self.indexOf(value) === index
 }
 
-function getTypefacesFromPackage () {
+function getFontSourcesFromPackage () {
   return globby
-    .sync('typeface-*', { cwd: 'node_modules', onlyDirectories: true })
-    .map((fullPath) => fullPath.replace('typeface-', '')
+    .sync('fontsource-*', { cwd: 'node_modules', onlyDirectories: true })
+    .map((fullPath) => fullPath.replace('fontsource-', '')
   )}

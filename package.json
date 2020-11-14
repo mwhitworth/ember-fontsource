@@ -1,7 +1,7 @@
 {
-  "name": "ember-typeface",
-  "version": "1.0.1",
-  "description": "Easily add typefaces (fonts) to your Ember projects.",
+  "name": "ember-fontsource",
+  "version": "1.0.0",
+  "description": "Easily add fontsources (fonts) to your Ember projects.",
   "keywords": [
     "ember-addon",
     "font",
@@ -11,12 +11,18 @@
     "webfont"
   ],
   "license": "MIT",
-  "repository": "https://github.com/jeffjewiss/ember-typeface",
+  "repository": "https://github.com/mwhitworth/ember-fontsource",
   "bugs": {
-    "url": "https://github.com/jeffjewiss/ember-typeface/issues"
+    "url": "https://github.com/mwhitworth/ember-fontsource/issues"
   },
-  "homepage": "https://github.com/jeffjewiss/ember-typeface",
-  "author": "Jeff Jewiss <jeffjewiss@gmail.com>",
+  "homepage": "https://github.com/mwhitworth/ember-fontsource",
+  "author": "Matt Whitworth <mwhitworth@gmail.com>",
+  "contributors": [
+    {
+      "name": "Jeff Jewiss",
+      "email": "jeffjewiss@gmail.com"
+    }
+  ],
   "directories": {
     "test": "tests"
   },
