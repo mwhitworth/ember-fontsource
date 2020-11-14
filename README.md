@@ -20,7 +20,7 @@
 Background
 ----------
 
-This Ember addon is adapted from [https://github.com/jeffjewiss/ember-typeface]
+This Ember addon is adapted from [ember-typeface](https://github.com/jeffjewiss/ember-typeface)
 
 Installation
 ------------
@@ -32,7 +32,7 @@ ember install ember-fontsource
 Usage
 -----
 
-1. Install Ember Typeface: `ember install ember-fontsource`
+1. Install Ember Fontsource: `ember install ember-fontsource`
 2. Pick a fontsource from the list of over [800 available](https://github.com/jeffjewiss/ember-fontsource/blob/master/lib/typefaces.js) and add it to your project: `npm install fontsource-lato --save-dev`
 
 That’s it!
@@ -42,7 +42,7 @@ You are now free to use `font-family: "Lato"` in your application’s styles.
 Advanced Usage
 --------------
 
-Ember Typeface will try to look through your `node_modules` to discover fontsource packages. If fontsources are specified in the config options in your app’s evironment: `ENV.fontsourceOptions.fontsources` the two lists will be merged for unique values. However, you can choose to disable this auto discovery and configure which fontsources are imported into your project.
+Ember Fontsource will try to look through your `node_modules` to discover fontsource packages. If fontsources are specified in the config options in your app’s evironment: `ENV.fontsourceOptions.fontsources` the two lists will be merged for unique values. However, you can choose to disable this auto discovery and configure which fontsources are imported into your project.
 
 ```javascript
 // config/environment.js
